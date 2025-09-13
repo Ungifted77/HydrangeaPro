@@ -15,6 +15,18 @@ pip install -e .
 
 # 三、使用方法
 
+## 命令说明
+
+- `apps`: 列出所有应用，支持按LLM和向量数据库过滤
+- `bids`: 列出所有缺陷ID，支持按应用过滤
+- `info`: 显示特定缺陷的元数据信息
+- `test`: 显示测试信息（仅打印，不执行）
+
+## 数据格式
+
+应用数据存储在 `application.csv` 文件中，缺陷数据存储在 `db/` 目录下的 YAML 文件中。
+
+
 ## 1.列出应用
 
 ```bash
@@ -87,28 +99,21 @@ hydrangea bids
 ### 按应用过滤缺陷ID
 
 ```bash
-hydrangea bids --app LocaLAGI
+hydrangea bids --app LocaLAGI //会列出所有名字带有LcocaLAGI的app的bid
 ```
 
-### 查看缺陷详细信息
+---
+
+## 3. 查看缺陷详细信息
 
 ```bash
-hydrangea info LocaLAGI LocaLAGI-Loop-case1
+hydrangea info "camel" camel-ai-camel-privacy_violation-/
+hydrangea info MEMGPT cpacker-MemGPT-exceeding_llm_content_limit-case1
 ```
 
-### 显示测试信息
+---
 
-```bash
-hydrangea test -w ./work --trigger
-```
+## 4. 显示测试信息
 
-## 命令说明
+没做
 
-- `apps`: 列出所有应用，支持按LLM和向量数据库过滤
-- `bids`: 列出所有缺陷ID，支持按应用过滤
-- `info`: 显示特定缺陷的元数据信息
-- `test`: 显示测试信息（仅打印，不执行）
-
-## 数据格式
-
-应用数据存储在 `application.csv` 文件中，缺陷数据存储在 `db/` 目录下的 YAML 文件中。
