@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+hydrangea_cli/__init__.py
+hydrangea_cli/cli.py
+hydrangea_cli.egg-info/PKG-INFO
+hydrangea_cli.egg-info/SOURCES.txt
+hydrangea_cli.egg-info/dependency_links.txt
+hydrangea_cli.egg-info/entry_points.txt
+hydrangea_cli.egg-info/requires.txt
+hydrangea_cli.egg-info/top_level.txt
+hydrangea_cli/core/__init__.py
+hydrangea_cli/core/metadata.py
