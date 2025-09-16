@@ -1,29 +1,151 @@
-# HydrangeaPro
+# 一、Hydrangea CLI
 
-根据repo：https://github.com/ecnusse/Hydrangea/blob/main/defect.csv  复现这些bug，并检查这个缺陷库后改正错误并且尝试新加内容后，使用完善的Hydrangea库所搭建的一个命令行工具，可以在命令行中查询相关缺陷的内容。
+Hydrangea CLI 是一个命令行工具，用于查询和管理 Hydrangea 数据集。
+根据repo：https://github.com/ecnusse/Hydrangea/blob/main/defect.csv 复现这些bug，并检查这个缺陷库后改正错误并且尝试新加内容后，使用完善的Hydrangea库所搭建的一个命令行工具，可以在命令行中查询相关缺陷的内容。
+==此处再详细介绍一下这个项目内容==
+
 ---
-根目录trans.py是我做的excel转yaml工具，下载下来后把第7行
 
-```PTHTON
-    INPUT_FILE = "defect_analysis_603-891.xlsx"
+
+# 二、安装
+
+```bash
+pip install -e .
 ```
-改成自己的那个excel文件即可
 
-转好的db文件夹替换到hydrangea-cli/db就行，现在这个文件夹里的是我的excel部分转出来的yaml文件
+# 三、使用方法
+
+## 命令说明
+
+- `apps`: 列出所有应用，支持按LLM和向量数据库过滤
+- `bids`: 列出所有缺陷ID，支持按应用过滤
+- `info`: 显示特定缺陷的元数据信息
+- `test`: 显示测试信息（仅打印，不执行）
+
+## 数据格式
+
+应用数据存储在 `application.csv` 文件中，缺陷数据存储在 `db/` 目录下的 YAML 文件中。
+
+
+## 1.apps指令——列出应用
+
+```bash
+hydrangea apps
+```
+详细内容可以在命令行中输入
+```bash
+hydrangea apps --help
+```
+查看分类以输出想要查看的软件类型，以下也进行罗列：
+
+### 1.1 按分类过滤应用
+
+```bash
+hydrangea apps --classification chatbot
+```
+
+
+### 1.2 按LLM过滤应用
+
+```bash
+hydrangea apps --llm OpenAI
+```
+
+### 1.3 按LLM部署环境过滤应用
+
+```bash
+hydrangea apps --llm-deployment online
+```
+
+### 1.4 按向量数据库过滤应用
+
+```bash
+hydrangea apps --vdb chroma
+```
+
+### 1.5 按向量数据库部署环境过滤应用
+
+```bash
+hydrangea apps --vdb-deployment local
+```
+
+### 1.6 按LangChain过滤应用
+
+```bash
+hydrangea apps --langchain 1
+```
+
+### 1.7 按编程语言过滤应用
+
+```bash
+hydrangea apps --language python
+```
+
+### 1.8 组合过滤
+
+```bash
+hydrangea apps --llm OpenAI --vdb chroma --language python
+hydrangea apps --classification chatbot --llm-deployment online --langchain 1
+```
 
 ---
 
-目标：
+## 2. bids指令——列出缺陷ID
 
-| 命令 | 作用 | 说明 |
-| --- | --- | --- |
-| `apps` | 列出所有应用 | 可加 `--llm GPT-4` / `--vdb chroma` 过滤 |
-| `bids` | 列出所有缺陷 ID | 等价于 Defects4J 的 bug id 列表 |
-| `info <app> <bid>` | 打印缺陷元数据 | 包含 repo、commit、类型、后果、源位置、触发用例 |
-| `test <app> <bid> [--trigger]` | 显示触发用例 | **这里不执行**，只打印 `trigger_tests` 字段 |
+```bash
+hydrangea bids
+```
 
-已经完成了apps bids info test
+### 按应用过滤缺陷ID
 
-需要继续完成内部readme的书写
+```bash
+hydrangea bids --app LocaLAGI //会列出所有名字带有LcocaLAGI的app的bid
+```
 
-命令行工具的安装和使用看hydrangea-cli/README.md
+---
+
+## 3. info指令——查看缺陷详细信息
+
+```bash
+hydrangea info "camel" camel-ai-camel-privacy_violation-/
+hydrangea info MEMGPT cpacker-MemGPT-exceeding_llm_content_limit-case1
+```
+
+---
+
+## 4. test指令——显示测试信息
+### 参数说明
+
+- `app`: 应用名称（必需）
+- `bid`: 缺陷ID（必需）  
+- `--trigger`: 显示触发测试（可选）
+
+```bash
+# 显示基本测试信息
+hydrangea test camel camel-ai-camel-privacy_violation-/
+
+# 显示详细触发测试
+hydrangea test camel camel-ai-camel-privacy_violation-/ --trigger
+```
+
+
+
+### 输出示例
+
+**基本模式**：
+```
+Test information for camel - camel-ai-camel-privacy_violation-/
+Defect type: privacy violation
+Case: /
+Use --trigger to see detailed trigger tests
+```
+
+**触发测试模式**：
+```
+trigger_tests:
+- 1.Set up Camel: Ensure the project is correctly set up in your local environment.
+2.Configure Roles: Set up a role-playing scenario where one agent has restricted privileges (e.g., "Guest User") and another has administrative privileges.
+3.Define Security Boundaries: Establish clear system message constraints about access permissions.
+4.Execute Test: Initiate conversation where the restricted role attempts to access privileged operations.
+5.Observe Behavior: Monitor if the AI system properly enforces access controls or inadvertently reveals sensitive information.
+```

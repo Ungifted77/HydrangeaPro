@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydrangea-cli"
+version = "0.1.0"
+description = "Hydrangea CLI - 命令行工具用于查询Hydrangea数据集"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "typer>=0.9.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+hydrangea = "hydrangea_cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hydrangea_cli*"]
