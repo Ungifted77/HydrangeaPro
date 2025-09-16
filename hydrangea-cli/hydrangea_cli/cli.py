@@ -89,15 +89,34 @@ def info(
 
 @app.command()
 def test(
-    workdir: str = typer.Option(".", "-w", "--workdir", help="工作目录"),
+    app: str = typer.Argument(..., help="应用名称"),
+    bid: str = typer.Argument(..., help="缺陷ID"),
     trigger: bool = typer.Option(False, "--trigger", help="显示触发测试")
 ):
     """显示测试信息（仅打印，不执行）"""
+    # 获取特定缺陷的信息
+    defect_info = metadata_manager.get_defect_info(app, bid)
+    
+    if not defect_info:
+        typer.echo(f"Defect not found: {app} - {bid}")
+        return
+    
     if trigger:
-        typer.echo("trigger_tests:")
-        typer.echo("- user_prompt=..., config=..., kb=...")
+        # 显示触发测试
+        trigger_tests = defect_info.get('trigger_tests', [])
+        if trigger_tests:
+            typer.echo("trigger_tests:")
+            for test in trigger_tests:
+                if test.strip():
+                    typer.echo(f"- {test}")
+        else:
+            typer.echo("No trigger tests available for this defect.")
     else:
-        typer.echo("Test command - use --trigger to see trigger tests")
+        # 显示基本测试信息
+        typer.echo(f"Test information for {app} - {bid}")
+        typer.echo(f"Defect type: {defect_info.get('type', 'N/A')}")
+        typer.echo(f"Case: {defect_info.get('case', 'N/A')}")
+        typer.echo("Use --trigger to see detailed trigger tests")
 
 
 def main():
