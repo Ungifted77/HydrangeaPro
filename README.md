@@ -19,11 +19,11 @@
 | --- | --- | --- |
 | `apps` | 列出所有应用 | 可加 `--llm GPT-4` / `--vdb chroma` 过滤 |
 | `bids` | 列出所有缺陷 ID | 等价于 Defects4J 的 bug id 列表 |
-| `info -p <app> -b <bid>` | 打印缺陷元数据 | 包含 repo、commit、类型、后果、源位置、触发用例 |
-| `test -w workdir [--trigger]` | 显示触发用例 | **这里不执行**，只打印 `trigger_tests` 字段 |
+| `info <app> <bid>` | 打印缺陷元数据 | 包含 repo、commit、类型、后果、源位置、触发用例 |
+| `test <app> <bid> [--trigger]` | 显示触发用例 | **这里不执行**，只打印 `trigger_tests` 字段 |
 
-已经大致完成了apps bids info
+已经完成了apps bids info test
 
-需要继续完成test和内部readme的书写
+需要继续完成内部readme的书写
 
 命令行工具的安装和使用看hydrangea-cli/README.md
