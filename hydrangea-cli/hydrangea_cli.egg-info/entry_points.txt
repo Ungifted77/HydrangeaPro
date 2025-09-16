@@ -1,2 +1,0 @@
-[console_scripts]
-hydrangea = hydrangea_cli.cli:main
