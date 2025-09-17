@@ -4,7 +4,7 @@ import pandas as pd
 import yaml
 
 # 输入 Excel 文件
-INPUT_FILE = "defect_analysis_603-891.xlsx"
+INPUT_FILE = "defect.xlsx"
 SHEET_NAME = "defect"
 OUTPUT_DIR = "db"
 
